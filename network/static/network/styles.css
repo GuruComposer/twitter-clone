@@ -1,0 +1,136 @@
+body {
+    padding: .5em;
+}
+
+.edit-button {
+    border-radius: 30px;
+    position: relative;
+    font-size: .5em;
+}
+
+.done-button {
+    border-radius: 30px;
+    position: relative;
+    font-size: .5em;
+}
+
+.edit-button-group button {
+    display: inline;
+}
+
+.page-header {
+    text-align: center;
+}
+
+.posts-container {
+    width: 45%;
+    display: flex;
+    margin: auto;
+    border: 3px solid lightblue;
+    background: lightgray;
+    padding: 10px;
+    text-align: center;
+}
+
+.all-cards {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.card {
+    text-align: center;
+    margin: 1em;
+}
+
+.card-body {
+    text-align: center;
+}
+
+
+.post-form-text-area {
+    display: block;
+    width: 25%;
+    margin-right: auto;
+    margin-left: auto;
+    height: 15em;
+    resize: none;
+}
+
+.post-form {
+    text-align: center;
+}
+
+.edit-button-group {
+    display: inline-block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.post-li {
+    display: inline-block;
+}
+
+.edit-textarea {
+    display: inline-block;
+    margin-right: auto;
+    margin-left: auto;
+    height: 3em;
+    resize: none;
+}
+
+.body {
+    margin-top: 10%;
+}
+
+
+.btn {
+    margin: .25em;
+}
+
+.pagination-div ul {
+    margin: 1em;
+    list-style-type:none;
+    display:flex;
+    justify-content: center;
+}
+
+/* Nav Bar */
+.navbar {
+    text-align: center;
+    margin: 0 auto;
+    display: flex;
+    overflow: hidden;
+    background-color: #333;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+    z-index: 999;
+    margin-bottom: 5%;
+}
+
+.navlink { 
+    justify-content: center;
+    margin: auto;
+}
+
+
+/* Pictures */
+#left-picture-container {
+    position: fixed;
+    top: 15%;
+    left: 5%;
+    z-index: -1;
+    width: 100%;
+    height: 23px;
+}
+
+#right-picture-container {
+    position: fixed;
+    top: 15%;
+    left: 85%;
+    z-index: -1;
+    width: 100%;
+    height: 23px;
+}

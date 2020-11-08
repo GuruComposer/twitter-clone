@@ -1,0 +1,168 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+
+{% block body %}
+<!-- all posts -->
+<div id="all-posts-view">
+    <div class="page-header">
+        {% if page == "all-posts" %}
+        <h1>All Posts</h1>
+        {% endif %}  
+    </div>
+    <div class="post-form">
+        {% if user.is_authenticated %}
+        {% if post_form %}
+        {% load crispy_forms_tags %}
+        {% crispy post_form post_form.helper %}
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+
+
+<!-- following-posts -->
+<div class="page-header" id="following-posts-view">
+    {% if page == "following" %}
+    <h1>Posts of people you're following.</h1> 
+    {% endif %}
+</div>
+
+
+<!-- profile-view -->
+<div class="page-header" id="profile-view">
+    {% if page == "profile" %}
+    {% if user.is_authenticated %}
+    <input type="hidden" id="is_authenticated" value="true">
+    {% else %}
+    <input type="hidden" id="is_authenticated" value="false">
+    {% endif %}
+    
+    {% if profile != user %}
+    <input type="hidden" id="is_self" value="false">
+    {% else %}
+    <input type="hidden" id="is_self" value="true">
+    {% endif %}
+    
+    
+    <h1>{{ profile.username|title }}</h1>
+    <p>
+        <span id="user-followers">{{ profile.username|title }} has {{ profile.followers.count }} followers.</span><br>
+        <span>{{ profile.username|title }} follows {{ profile.follows.count }} people.</span>
+    </p>
+    
+    {% if user.is_authenticated %}
+    {% if profile not in user.follows.all and profile != user %}
+    <button id="follow-button" class="btn btn-primary">Follow</button>
+    <br>
+    {% elif profile != user %}
+    <button id="follow-button" class="btn btn-primary">Unfollow</button>
+    <br>
+    {% endif %}
+    <br>
+    <input type="hidden" id="user_id" value={{profile.id}}>
+    {% endif %}
+    {% endif %}
+</div>
+
+
+<!-- no user is logged in -->
+{% if page == "default" %}
+<div class="page-header">
+    <h1>Please Login</h1>
+</div>
+{% endif %}
+
+<!-- display queried posts -->
+<div class="posts-container">
+    <div class="all-cards">
+        {% for post in posts %}
+        <div class="card"> 
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a id="profile-{{post.owner}}" class="profile-link" href="{% url 'profile' post.owner %}">{{ post.owner|title }}</a>
+                </h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ post.timestamp }}</h6>
+                <p class="card-text">
+                    <span id="post-text-{{post.id}}">{{ post.text }}</span>
+                    <textarea class="edit-textarea" style="display: none;" id="post-textarea-{{post.id}}"></textarea>
+                </p>
+                
+                {% if user == post.owner %}
+                <span class="edit-button-group">
+                    <button id="edit-button-{{post.id}}" type="button" class="btn btn-primary btn-sm edit-button" value={{post.id}}>Edit</button>
+                    <button style="display: none;" id="done-button-{{post.id}}" type="button" class="btn btn-primary btn-sm done-button" value={{post.id}}>Done</button>
+                </span>
+                {% endif %}
+                <span>
+                    <button type="button" id="like-button-{{post.id}}" class="btn btn-primary btn-sm like-button" value={{post.id}}>
+                        {{ post.likes.count }} <i class="fas fa-heart"></i> 
+                    </button>
+                    
+                </span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<!-- Pagination -->
+<div class="pagination-div">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if posts.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ posts.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% endif %}
+            
+            <li class="page-item active" aria-current="page">
+                <a class="page-link" href="#">{{ posts.number }}<span class="sr-only"></span>
+                </a>
+            </li>
+            
+            {% if posts.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ posts.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
+
+<!-- Pictures -->
+<div id="left-picture-container">
+    <img src="{% static 'network/images/twitter-bird-left.png' %}"> 
+</div>
+<div id="right-picture-container">
+    <img src="{% static 'network/images/twitter-bird-right.png' %}"> 
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script src="{% static 'network/index.js' %}"></script>
+<script src="https://kit.fontawesome.com/b74184b364.js" crossorigin="anonymous"></script>
+{% if page == "profile" %}
+<script src="{% static 'network/profile.js' %}"></script>
+{% endif %}
+{% endblock %}
